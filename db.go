@@ -6,6 +6,7 @@ import (
 	"io"
 	"log/slog"
 	"os"
+	"sort"
 	"sync"
 )
 
@@ -115,6 +116,9 @@ func (db *DB) LoadReader(r io.Reader) error {
 			procs = append(procs, pi)
 		}
 		if len(procs) > 0 {
+			sort.Slice(procs, func(i, j int) bool {
+				return procs[i].Prevalence > procs[j].Prevalence
+			})
 			newEntries[fp] = procs
 		}
 	}
